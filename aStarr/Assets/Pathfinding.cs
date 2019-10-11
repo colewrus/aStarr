@@ -17,6 +17,14 @@ public class Pathfinding : MonoBehaviour
     private void Update()
     {
         FindPath(player.position, dest.position);
+
+        if (Input.GetMouseButton(1))
+        {
+            Vector3 point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            //grid.NodeFromWorldPoint(point);
+            dest.transform.position = grid.NodeFromWorldPoint(point).worldPosition;
+        }
+            
     }
 
     void FindPath(Vector3 startPos, Vector3 targetPos)
