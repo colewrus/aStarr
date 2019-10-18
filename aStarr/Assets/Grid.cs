@@ -5,6 +5,7 @@ using UnityEngine;
 public class Grid : MonoBehaviour
 {
 
+    public bool displayPathGizmos;
     //public Transform player; //player highlight
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
@@ -22,6 +23,14 @@ public class Grid : MonoBehaviour
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
 
         CreateGrid();
+    }
+
+    public int MaxSize
+    {
+        get
+        {
+            return gridSizeX * gridSizeY;
+        }
     }
 
     void CreateGrid()
@@ -85,10 +94,21 @@ public class Grid : MonoBehaviour
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
-        if(grid != null)
+        if (displayPathGizmos)
+        {
+            if(path != null)
+            {
+                foreach(Node n in path)
+                {
+                    Gizmos.color = Color.black;
+                    Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - 0.1f));
+                }
+            }
+        }
+        else
         {
             //Node playerNode = NodeFromWorldPoint(player.position); //player highlight
-            foreach(Node n in grid)
+            foreach (Node n in grid)
             {
 
                 Gizmos.color = (n.walkable) ? Color.white : Color.red;
@@ -102,10 +122,10 @@ public class Grid : MonoBehaviour
                 if (path != null)
                     if (path.Contains(n))
                         Gizmos.color = Color.black;
-                Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter-0.1f));
+                Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - 0.1f));
 
             }
-        }
+        }       
        
     }
 }
